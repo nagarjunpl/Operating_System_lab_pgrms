@@ -106,7 +106,7 @@ void two() {
             int ph1_index = hu[i];
             int ph2_index = hu[j];
             
-            if ((abs(ph1_index - ph2_index) >= 2) && (abs(ph1_index - ph2_index) != tfph - 1)) {
+            if ((abs(ph1_index - ph2_index) >= 1) && (abs(ph1_index - ph2_index) != tfph - 1)) {
                 
                 // Grant Eat Permission for the pair
                 Pf("\nIn combination %d and %d:\n", i + 1, j + 1);
@@ -128,4 +128,5 @@ void two() {
         }
     }
     Pf("\nEnd of two-at-a-time checks.\n");
+
 }
