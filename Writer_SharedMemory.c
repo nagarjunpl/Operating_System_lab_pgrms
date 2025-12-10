@@ -1,43 +1,25 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/shm.h>
-#include <string.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<sys/shm.h>
+#include<string.h>
 
 int main()
 {
-    int shmid;
+    int i;
     void *shared_memory;
-    char buffer[100];
+    char buff[100];
+    int shmid;
+    
+    shmid=shmget((key_t)2345, 1024, 0666|IPC_CREAT);
 
-    // Create shared memory (key, size, permissions | create)
-    shmid = shmget((key_t)2345, 1024, 0666 | IPC_CREAT);
-    if (shmid == -1) {
-        perror("shmget failed");
-        return 1;
-    }
-
-    printf("Shared memory key (ID): %d\n", shmid);
-
-    // Attach shared memory
-    shared_memory = shmat(shmid, NULL, 0);
-    if (shared_memory == (void*)-1) {
-        perror("shmat failed");
-        return 1;
-    }
-
-    printf("Process attached at: %p\n", shared_memory);
-
-    printf("Enter some data to write into shared memory:\n");
-    read(0, buffer, 100);
-
-    // Write data to shared memory
-    strcpy(shared_memory, buffer);
-
-    printf("Data written: %s\n", (char *)shared_memory);
-
-    // Detach
-    shmdt(shared_memory);
-
-    return 0;
+    printf("Key of shared memory is %d\n",shmid);
+    shared_memory=shmat(shmid,NULL,0); //process attached to shared memory segment
+    printf("Process attached at %p\n",shared_memory);
+     //this prints the address where the segment is attached with this process
+    
+    printf("Enter some data to write to shared memory\n");
+    read(0,buff,100); //get some input from user
+    strcpy(shared_memory,buff); //data written to shared memory
+    printf("You wrote : %s\n",(char *)shared_memory);
 }
